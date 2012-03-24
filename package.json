@@ -1,0 +1,10 @@
+{
+  "name": "lfrbgs.com",
+  "version": "0.0.1",
+  "dependencies": {
+    "express": "latest",
+    "nodemailer": "latest",
+    "jade": "latest",
+    "socketio": "latest"
+  }
+}

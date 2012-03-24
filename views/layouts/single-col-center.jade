@@ -1,0 +1,56 @@
+
+- if ( title == null )
+	- var title = '';
+
+!!! 5
+html
+
+	head
+		title= title
+		link(href="/c/bootstrap.min.css", rel="stylesheet", type="text/css")
+		//link(href="/c/main.css", rel="stylesheet", type="text/css")
+		script(src="//maps.googleapis.com/maps/api/js?key=AIzaSyAWDyZOxhCi8s98_OWC8a1XG8a1ZTpikF0&sensor=false")
+		script(src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js")
+		script(src="/j/main.js")
+		
+	body
+
+		header
+			
+			div#header.container
+
+				h1 LF RBGs
+
+				div#nav_main
+					ul
+						li
+							a(href="/") Contact
+						li
+							a(href="/lfg/") Jumpers
+						li
+							a(href="/lfm/") Order
+
+				p.message Blizzard sucks! Why do I have to do this???
+
+		content
+		
+			div#wrapper.container
+			
+				div.content
+					!{body}
+
+
+		footer
+
+			div#footer
+				div#site_info
+					ul
+						li.first
+							a(href="/") home
+						li.last
+							a(href="/") contact
+
+					p &copy; 2012 lfrbgs.com
+
+		script(src="/j/main.js")
+
