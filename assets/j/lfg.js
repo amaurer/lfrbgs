@@ -39,7 +39,7 @@
 		);
 	});
 
-	b.addToList = function(type, data, checkDups){
+	b.newConnection = function(type, data, checkDups){
 		var appendList = lfgList;
 		if(type === "lfm"){
 			appendList = lfmList;
@@ -53,8 +53,8 @@
 		);
 	};
 
-	b.killConnection = function(){
-
+	b.killConnection = function(qid){
+		$("#" + qid).remove();
 	}
 
 })(jQuery, socket, bus);
