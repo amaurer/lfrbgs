@@ -1,13 +1,15 @@
 h4!=hashO
 
+div
+	h4 Looking for more
+	ul#lfm
+div
+	h4 Looking for group
+	ul#lfg
+
 script(src="/socket.io/socket.io.js")
 script
 	var id = "#{hashO}";
 
 
-script
-	var socket = io.connect('http://localhost/?id=' + id);
-		socket.on('news', function (data) {
-			console.log(data);
-			socket.emit('my other event', { my: 'data' });
-		});
+script(src="/j/queue.js")

@@ -35,43 +35,47 @@ exports.init = function(app){
 	});
 
 	/************ Socket Events ***********************/
-	/* Events
-		- LFG connected
-		- LFM connected
-		- LFM ping LFG user
-		- LFG pong LFM (approved)
-	*/
-
 	io.sockets.on("connection", function (socket) {
 		console.log("----- Connection ----");
-		var user = Bus.getConnection(socket.handshake.query.id);
-		if(user !== false){
-			user.addSocketID(socket.id);
+		var conn = Bus.getConnection(socket.handshake.query.id);
+		if(conn !== false){
+			conn.addSocketID(socket.id);
 		} else {
 			socket.emit("You Fail!");
 			return false;
 		};
 		
-		/* Return data for building display */
-		socket.emit("initializedData", Bus.getPublicData());
+		/***** Public Events ******/
+			/* Return data for building display */
+			socket.emit("initializedData", Bus.getPublicConnectionData());
 
-		/* Hook for private messages */
-		socket.on("wsp", function (data) {
-			console.log(data);
-			io.sockets.socket(data.socketId).emit("dood");
-		});
+			/* Tell Everyone that you're here */
+			io.sockets.emit("newConnection", conn.getPublicData());
 
-		/* Hook for asking for approval to talk */
-		socket.on("ping", function (data) {
-			console.log(data);
-			io.sockets.socket(data.socketId).emit("dood");
-		});
+			/* Tell Everyone that you're gone */
+			socket.on("disconnect", function(){
+				io.sockets.emit("killConnection", conn.qid);
+			});
 
-		/* Hook for approval to talk */
-		socket.on("pong", function (data) {
-			console.log(data);
-			io.sockets.socket(data.socketId).emit("dood");
-		});
+		/***** Private Events ******/
+			/* Hook for private messages */
+			socket.on("wsp", function (data) {
+				console.log(data);
+				io.sockets.socket(data.socketId).emit("dood");
+			});
+
+			/* Hook for asking for approval to talk */
+			socket.on("ping", function (data) {
+				console.log(data);
+				io.sockets.socket(data.socketId).emit("dood");
+			});
+
+			/* Hook for approval to talk */
+			socket.on("pong", function (data) {
+				console.log(data);
+				io.sockets.socket(data.socketId).emit("dood");
+			});
+			
 	});
 
 
