@@ -16,7 +16,9 @@ Bus.prototype.addConnection = function(connType, name, realm, address){
 		return false;
 	};
 	var qid = this.createQueueID(name, realm);
-	return this.queue.connections[connType][qid] = new User(name, realm, address, qid, connType);
+	return this.queue.connections[connType][qid] = new User(
+		name, realm, address, qid, connType
+	);
 };
 
 Bus.prototype.getConnection = function(name, realm) {
@@ -73,11 +75,57 @@ Bus.prototype.getPublicConnectionData = function() {
 		groupObject[n] = [];
 		for(nn in this.queue.connections[n]){
 			groupObject[n].push(
-				this.queue.connections[n][nn].getPublicData()
+				this.getPublicData(this.queue.connections[n][nn])
 			);
 		};
 	};
 	return groupObject;
+};
+
+Bus.prototype.requestApprovalConnection = function(requestingQid, pingedQid){
+	/* Conn is the LFM, requestedQid is LFG */
+	var pingedConn = this.getConnection(pingedQid);
+	if(pingedConn !== false && pingedConn.isRejected(requestingQid) === false){
+		pingedConn.addRejectedConnection(requestingQid);
+		return pingedConn;
+	};
+	return false;
+};
+
+Bus.prototype.approveConnection = function(requestingConn, pongedQid){
+	/* LFG responded approve to pinged request by LFM */
+	var pongedConn = this.getConnection(pongedQid);
+	if(pongedConn !== false){
+		requestingConn.addApprovedConnection(pongedQid);
+		return pongedConn;
+	};
+	return false;
+};
+
+Bus.prototype.getPublicData = function(conn, includeDetails){
+	var publicData = {
+		qid : conn.qid,
+		experience : conn.experience,
+		type : conn.type
+	};
+	if(conn.type === "lfg"){
+		publicData.name = conn.name;
+		publicData.realm = conn.realm;
+		publicData.current = conn.current;
+		if(includeDetails){
+			/* ? */
+		}
+		return publicData;
+	} else if(conn.type === "lfm"){
+		publicData.groupMakeup = conn.groupMakeup;
+		if(includeDetails){
+			publicData.name = conn.name;
+			publicData.realm = conn.realm;
+			publicData.bnEmail = conn.bnEmail;
+		};
+		return publicData;
+	};
+	return false;
 };
 
 exports.eventBus = Bus;

@@ -50,7 +50,7 @@ exports.init = function(app){
 			socket.emit("initializedData", Bus.getPublicConnectionData());
 
 			/* Tell Everyone that you're here */
-			io.sockets.emit("newConnection", conn.getPublicData());
+			io.sockets.emit("newConnection", Bus.getPublicData(conn));
 
 			/* Tell Everyone that you're gone */
 			socket.on("disconnect", function(){
@@ -61,19 +61,25 @@ exports.init = function(app){
 			/* Hook for private messages */
 			socket.on("wsp", function (data) {
 				console.log(data);
-				io.sockets.socket(data.socketId).emit("dood");
+				io.sockets.socket(data.socketId).emit("wsp", "dood");
 			});
 
-			/* Hook for asking for approval to talk */
+			/* Hook for asking for approval to talk LFM */
 			socket.on("ping", function (data) {
-				console.log(data);
-				io.sockets.socket(data.socketId).emit("dood");
+				var pingConn = Bus.requestApprovalConnection(conn.qid, data);
+				if(pingConn !== false){
+					/* Ping LFG and send my conn info */
+					io.sockets.socket(pingConn.socketID).emit("ping", Bus.getPublicData(conn, true));
+				};
 			});
 
-			/* Hook for approval to talk */
+			/* Hook for approval to talk LFG */
 			socket.on("pong", function (data) {
-				console.log(data);
-				io.sockets.socket(data.socketId).emit("dood");
+				var pongConn = Bus.approveConnection(conn, data);
+				if(pongConn !== false){
+					/* pong LFM and send approval */
+					io.sockets.socket(pongConn.socketID).emit("pong", conn.qid);
+				};
 			});
 			
 	});
@@ -97,7 +103,8 @@ exports.init = function(app){
 		res.render("queue", {
 			layout : "layouts/single-col-center",
 			title : "Welcome to Looking for Rated Battleground - Picking up where Blizzard left off!",
-			hashO : conn.qid
+			hashO : conn.qid,
+			pageType : "lfg"
 		});
 	});
 	app.get("/lfm/:realm/:name", function(req, res){
@@ -116,7 +123,8 @@ exports.init = function(app){
 		res.render("queue", {
 			layout : "layouts/single-col-center",
 			title : "Welcome to Looking for Rated Battleground - Picking up where Blizzard left off!",
-			hashO : conn.qid
+			hashO : conn.qid,
+			pageType : "lfm"
 		});
 	});
 
