@@ -1,1 +1,27 @@
 h2 Welcome dood
+
+div.row
+
+	div.span4
+		h3 LFG
+		form#lfgForm(method="POST", action="javascript:void(0);")
+			input(name="name", placeholder="Character Name")
+			select.servers(name="realm", placeholder="Character Realm")
+			select#lfgClass(name="class", placeholder="Character Class")
+			select#lfgSpecs(name="spec", placeholder="Character Spec", disabled="true")
+			input(name="experience", placeholder="Experience Rating")
+			input(name="current", placeholder="Current Rating")
+
+
+	div.span4
+		h3 LFM
+		form#lfmForm(method="POST", action="javascript:void(0);")
+			input(name="name", placeholder="Character Name")
+			select.servers(name="realm", placeholder="Character Realm")
+			input(name="bnEmail", placeholder="Battle.net Email")
+			input(name="experience", placeholder="Experience Rating")
+			h4 Current Group Composition
+			div#lfmClasses
+
+script(src="/j/servers.js")
+script(src="/j/index.js")

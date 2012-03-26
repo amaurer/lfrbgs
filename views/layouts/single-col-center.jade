@@ -11,7 +11,7 @@ html
 		//link(href="/c/main.css", rel="stylesheet", type="text/css")
 		script(src="//maps.googleapis.com/maps/api/js?key=AIzaSyAWDyZOxhCi8s98_OWC8a1XG8a1ZTpikF0&sensor=false")
 		script(src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js")
-		script(src="/j/main.js")
+		script(src="/j/bootstrap.min.js")
 		
 	body
 
@@ -19,16 +19,8 @@ html
 			
 			div#header.container
 
-				h1 LF RBGs
-
-				div#nav_main
-					ul
-						li
-							a(href="/") Contact
-						li
-							a(href="/lfg/rawrlz/sargeras/") LFG
-						li
-							a(href="/lfm/rawrlz/sargeras/") LFM
+				h1 
+					a(href="/") LF RBGs
 
 				p.message Blizzard sucks! Why do I have to do this???
 
@@ -42,7 +34,7 @@ html
 
 		footer
 
-			div#footer
+			div#footer.container
 				div#site_info
 					ul
 						li.first
@@ -51,6 +43,4 @@ html
 							a(href="/") contact
 
 					p &copy; 2012 lfrbgs.com
-
-		script(src="/j/main.js")
 
