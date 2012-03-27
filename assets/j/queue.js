@@ -20,7 +20,7 @@ var bus = {
 	}
 };
 
-var socket = io.connect(window.location.origin + '/?id=' + id);
+var socket = io.connect('http://' + window.location.host + '/?id=' + id);
 	socket.on("initializedData", function (data) {
 		console.log("INITIALIZE DATA = " + (data.lfg.length + data.lfm.length));
 		console.log(data);
